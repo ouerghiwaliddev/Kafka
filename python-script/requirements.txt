@@ -1,2 +1,2 @@
-happybase==3.0.0
+happybase==1.2.0  # Version stable sans dépendance à thriftpy2
 kafka-python==2.0.2
