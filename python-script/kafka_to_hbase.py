@@ -2,16 +2,19 @@ import argparse
 import happybase
 from kafka import KafkaConsumer
 
+
 parser = argparse.ArgumentParser()
-parser.add_argument('--topic', required=True, help='Nom du topic Kafka')
-parser.add_argument('--hbase-host', default='hbase', help='HBase hostname')
-parser.add_argument('--kafka-brokers', default='kafka:9092', help='Kafka brokers')
+parser.add_argument('--topic', required=True)
+parser.add_argument('--hbase-host', default='localhost')  # Changé depuis 'hbase'
+parser.add_argument('--hbase-port', type=int, default=9090)  # Nouveau paramètre
 args = parser.parse_args()
 
-# Connexion HBase
-connection = happybase.Connection(args.hbase_host)
-table = connection.table('kafka_messages')
-
+# Configuration de la connexion
+connection = happybase.Connection(
+    host=args.hbase_host,
+    port=args.hbase_port,  # Port standard HBase: 9090 (Thrift)
+    timeout=30000  # Timeout augmenté
+)
 # Consumer Kafka
 consumer = KafkaConsumer(
     args.topic,
@@ -29,3 +32,5 @@ for message in consumer:
         print(f"✓ Message stocké (offset: {message.offset})")
     except Exception as e:
         print(f"✗ Erreur: {str(e)}")
+
+

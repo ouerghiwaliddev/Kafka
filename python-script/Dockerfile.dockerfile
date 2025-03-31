@@ -1,5 +1,5 @@
 # Étape 1 - Builder avec dépendances de compilation
-FROM python:3.9-slim as builder
+FROM python:3.9-slim AS builder
 
 WORKDIR /app
 COPY requirements.txt .
